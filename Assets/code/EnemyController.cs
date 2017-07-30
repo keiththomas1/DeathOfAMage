@@ -34,6 +34,7 @@ public class EnemyController : MonoBehaviour {
                 var newEnemy = GameObject.Instantiate(Resources.Load("Enemy1") as GameObject);
                 newEnemy.transform.position = randomPosition;
                 newEnemy.transform.localScale = new Vector3((randomPosition.x < 0) ? 1.0f : -1.0f, 1.0f, 1.0f);
+                newEnemy.GetComponent<EnemyBehavior>().MaxSpeed = 1.8f + (this._roundController.CurrentRound / 10.0f);
                 _enemies.Add(newEnemy);
 
                 if (this._roundController.EnemiesThisRound <= _enemies.Count)

@@ -129,11 +129,17 @@ public class UIController : MonoBehaviour {
             this._introGroup.GetComponent<CanvasGroup>().alpha = 0.0f;
             this._introGroup.GetComponent<CanvasGroup>().blocksRaycasts = false;
         }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            ShowBetweenLevel();
+        }
 	}
 
     public void GameOver()
     {
         this._gameOverGroup.GetComponent<CanvasGroup>().alpha = 1.0f;
+        this._gameOverGroup.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        this._gameOverGroup.GetComponent<CanvasGroup>().interactable = true;
         this._gameOverGroup.transform.Find("SubtitleText2").GetComponent<TextMeshProUGUI>().text =
             "You lasted " + (this._roundController.CurrentRound - 1).ToString() + " rounds!";
         this._gameOverGroup.transform.Find("PlayAgainButton").GetComponent<Button>().onClick.AddListener(onPlayAgainClick);
@@ -183,21 +189,68 @@ public class UIController : MonoBehaviour {
                 this._skillSystem._hasIceBeam1 = false;
                 currentButton = this._iceBeamButtons.transform.Find("SkillIceBeam1").gameObject;
                 break;
-            case "Ice Eternity":
+            case "Huge Ice Beam":
+                this._skillSystem._hasIceBeam2 = false;
+                currentButton = this._iceBeamButtons.transform.Find("SkillIceBeam2").gameObject;
+                break;
+            case "Deadly Ice Beam":
+                this._skillSystem._hasIceBeam3 = false;
+                currentButton = this._iceBeamButtons.transform.Find("SkillIceBeam3").gameObject;
+                break;
+            case "Eternal Ice":
                 this._skillSystem._hasIceBeam4 = false;
                 currentButton = this._iceBeamButtons.transform.Find("SkillIceBeam4").gameObject;
+                var iceBeamBar = GameObject.Find("IceBeamBarBorder");
+                iceBeamBar.GetComponent<SpriteRenderer>().enabled = true;
+                iceBeamBar.transform.Find("IceBeamBar").GetComponent<SpriteRenderer>().enabled = true;
                 break;
             case "Ice Rune":
                 this._skillSystem._hasIceRune1 = false;
-                currentButton = this._iceBeamButtons.transform.Find("SkillIceRune4").gameObject;
+                currentButton = this._iceRuneButtons.transform.Find("SkillIceRune1").gameObject;
+                break;
+            case "Icy Whirlwind":
+                this._skillSystem._hasIceRune2 = false;
+                currentButton = this._iceRuneButtons.transform.Find("SkillIceRune2").gameObject;
+                break;
+            case "Hurricane Season":
+                this._skillSystem._hasIceRune3 = false;
+                currentButton = this._iceRuneButtons.transform.Find("SkillIceRune3").gameObject;
+                break;
+            case "I Swear She's Bout a Mile Across!":
+                this._skillSystem._hasIceRune4 = false;
+                currentButton = this._iceRuneButtons.transform.Find("SkillIceRune4").gameObject;
                 break;
             case "Glacier":
                 this._skillSystem._hasGlacier1 = false;
-                currentButton = this._iceBeamButtons.transform.Find("SkillGlacier4").gameObject;
+                currentButton = this._glacierButtons.transform.Find("SkillGlacier1").gameObject;
                 break;
-            case "Icicle Smash":
+            case "Glaciers for All!":
+                this._skillSystem._hasGlacier2 = false;
+                currentButton = this._glacierButtons.transform.Find("SkillGlacier2").gameObject;
+                break;
+            case "SUPER GLACIER":
+                this._skillSystem._hasGlacier3 = false;
+                currentButton = this._glacierButtons.transform.Find("SkillGlacier3").gameObject;
+                break;
+            case "Pointy Glaciers":
+                this._skillSystem._hasGlacier4 = false;
+                currentButton = this._glacierButtons.transform.Find("SkillGlacier4").gameObject;
+                break;
+            case "Ice Spike":
                 this._skillSystem._hasIcicle1 = false;
-                currentButton = this._iceBeamButtons.transform.Find("SkillIcicle4").gameObject;
+                currentButton = this._icicleButtons.transform.Find("SkillIcicle1").gameObject;
+                break;
+            case "Not Yo Mama's Icicle":
+                this._skillSystem._hasIcicle2 = false;
+                currentButton = this._icicleButtons.transform.Find("SkillIcicle2").gameObject;
+                break;
+            case "Hey What's That Above Us?":
+                this._skillSystem._hasIcicle3 = false;
+                currentButton = this._icicleButtons.transform.Find("SkillIcicle3").gameObject;
+                break;
+            case "SO MANY ICICLES":
+                this._skillSystem._hasIcicle4 = false;
+                currentButton = this._icicleButtons.transform.Find("SkillIcicle4").gameObject;
                 break;
         }
 
@@ -228,18 +281,24 @@ public class UIController : MonoBehaviour {
     }
     private void onIceBeamButton2Clicked()
     {
+        this._currentSkill = "Huge Ice Beam";
+        this._skillNameText.text = "Huge Ice Beam";
+        this._skillDescriptionText.text = "Double the size of your ice beam.";
         this._skillErrorText.enabled = this._skillSystem._hasIceBeam3;
         SetForgetDialog(!this._skillSystem._hasIceBeam3);
     }
     private void onIceBeamButton3Clicked()
     {
+        this._currentSkill = "Deadly Ice Beam";
+        this._skillNameText.text = "Deadly Ice Beam";
+        this._skillDescriptionText.text = "Double the damage of your ice beam.";
         this._skillErrorText.enabled = this._skillSystem._hasIceBeam4;
         SetForgetDialog(!this._skillSystem._hasIceBeam4);
     }
     private void onIceBeamButton4Clicked()
     {
-        this._currentSkill = "Ice Eternity";
-        this._skillNameText.text = "Ice Eternity";
+        this._currentSkill = "Eternal Ice";
+        this._skillNameText.text = "Eternal Ice";
         this._skillDescriptionText.text = "No cooldown on your ice beam. Shoot it forever!";
         this._skillErrorText.enabled = false;
         SetForgetDialog(true);
@@ -256,16 +315,25 @@ public class UIController : MonoBehaviour {
     }
     private void onIceRuneButton2Clicked()
     {
+        this._currentSkill = "Icy Whirlwind";
+        this._skillNameText.text = "Icy Whirlwind";
+        this._skillDescriptionText.text = "Does DOUBLE the damage!";
         this._skillErrorText.enabled = this._skillSystem._hasIceRune3;
         SetForgetDialog(!this._skillSystem._hasIceRune3);
     }
     private void onIceRuneButton3Clicked()
     {
+        this._currentSkill = "Hurricane Season";
+        this._skillNameText.text = "Hurricane Season";
+        this._skillDescriptionText.text = "Reduces the cooldown of the 'Ice Rune' ability.";
         this._skillErrorText.enabled = this._skillSystem._hasIceRune4;
         SetForgetDialog(!this._skillSystem._hasIceRune4);
     }
     private void onIceRuneButton4Clicked()
     {
+        this._currentSkill = "I Swear She's Bout a Mile Across!";
+        this._skillNameText.text = "I Swear She's Bout a Mile Across!";
+        this._skillDescriptionText.text = "Increases the size of 'Ice Rune'.";
         this._skillErrorText.enabled = false;
         SetForgetDialog(true);
     }
@@ -280,40 +348,58 @@ public class UIController : MonoBehaviour {
     }
     private void onGlacierButton2Clicked()
     {
+        this._currentSkill = "Glaciers for All!";
+        this._skillNameText.text = "Glaciers for All!";
+        this._skillDescriptionText.text = "Greatly reduces the cooldown of 'Glacier Push'.";
         this._skillErrorText.enabled = this._skillSystem._hasGlacier3;
         SetForgetDialog(!this._skillSystem._hasGlacier3);
     }
     private void onGlacierButton3Clicked()
     {
+        this._currentSkill = "SUPER GLACIER";
+        this._skillNameText.text = "SUPER GLACIER";
+        this._skillDescriptionText.text = "You can now basically sink the Titanic. Doubles Glacier size.";
         this._skillErrorText.enabled = this._skillSystem._hasGlacier4;
         SetForgetDialog(!this._skillSystem._hasGlacier4);
     }
     private void onGlacierButton4Clicked()
     {
+        this._currentSkill = "Pointy Glaciers";
+        this._skillNameText.text = "Pointy Glaciers";
+        this._skillDescriptionText.text = "Your glaciers now deal some damage and slows enemies.";
         this._skillErrorText.enabled = false;
         SetForgetDialog(true);
     }
 
     private void onIcicleButton1Clicked()
     {
-        this._currentSkill = "Icicle Smash";
-        this._skillNameText.text = "Icicle Smash";
+        this._currentSkill = "Ice Spike";
+        this._skillNameText.text = "Ice Spike";
         this._skillDescriptionText.text = "Gain the ability to create a large icicle that does high damage.";
         this._skillErrorText.enabled = this._skillSystem._hasIcicle2;
         SetForgetDialog(!this._skillSystem._hasIcicle2);
     }
     private void onIcicleButton2Clicked()
     {
+        this._currentSkill = "Not Yo Mama's Icicle";
+        this._skillNameText.text = "Not Yo Mama's Icicle";
+        this._skillDescriptionText.text = "Your 'Ice Spike' ability now hits a larger area.";
         this._skillErrorText.enabled = this._skillSystem._hasIcicle3;
         SetForgetDialog(!this._skillSystem._hasIcicle3);
     }
     private void onIcicleButton3Clicked()
     {
+        this._currentSkill = "Hey What's That Above Us?";
+        this._skillNameText.text = "Hey What's That Above Us?";
+        this._skillDescriptionText.text = "Your 'Ice Spike' ability now AUTOKILLS enemies!";
         this._skillErrorText.enabled = this._skillSystem._hasIcicle4;
         SetForgetDialog(!this._skillSystem._hasIcicle4);
     }
     private void onIcicleButton4Clicked()
     {
+        this._currentSkill = "SO MANY ICICLES";
+        this._skillNameText.text = "SO MANY ICICLES";
+        this._skillDescriptionText.text = "Reduces the cooldown of  your 'Ice Spike' ability.";
         this._skillErrorText.enabled = false;
         SetForgetDialog(true);
     }
