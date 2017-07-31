@@ -12,7 +12,7 @@ public class EnemyBehavior : MonoBehaviour {
     private GameObject _hero;
     private Vector2 _movementVector;
     private Quaternion _startingQuat;
-    private const float MIN_SPEED = 0.5f;
+    private const float MIN_SPEED = 0.8f;
     private float _maxSpeed = 1.8f;
     private float _speed = 1.8f;
     private const float STARTING_HEALTH = 100;
@@ -39,7 +39,7 @@ public class EnemyBehavior : MonoBehaviour {
     void Update() {
         this.transform.Translate(_movementVector);
 
-        if (Vector2.Distance(this._hero.transform.position, this.transform.position) < 0.3f)
+        if (Vector2.Distance(this._hero.transform.position, this.transform.position) < 0.4f)
         {
             this._hero.GetComponent<Animator>().Play("Death");
             this._enemyController.GameOver();
@@ -92,7 +92,7 @@ public class EnemyBehavior : MonoBehaviour {
         } else if (collision.collider.name == "Wave") { // Ice Rune
             this._health -= (this._uiController._skillSystem._hasIceRune2) ? 3.0f : 1.5f;
         } else if (collision.collider.name == "Icicle") {
-            this._health -= (this._uiController._skillSystem._hasIcicle3) ? STARTING_HEALTH : (STARTING_HEALTH * 0.75f);
+            this._health -= (this._uiController._skillSystem._hasIcicle3) ? STARTING_HEALTH : 15.0f;
         } else if (collision.collider.name == "GlacialPush") {
             this._health -= (this._uiController._skillSystem._hasGlacier4) ? 0.5f : 0.0f;
         }

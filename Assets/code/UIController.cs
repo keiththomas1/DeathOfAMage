@@ -35,6 +35,22 @@ public class UIController : MonoBehaviour {
     [SerializeField]
     private GameObject _gameOverGroup;
 
+    [SerializeField]
+    private GameObject _iceBeamGroup;
+    [SerializeField]
+    private GameObject _iceRuneGroup;
+    [SerializeField]
+    private GameObject _glacierGroup;
+    [SerializeField]
+    private GameObject _icicleGroup;
+
+    [SerializeField]
+    private GameObject _muteButton;
+    [SerializeField]
+    private Sprite _unmutedSprite;
+    [SerializeField]
+    private Sprite _mutedSprite;
+
     private string _currentSkill;
 
     public struct SkillSystem
@@ -92,6 +108,7 @@ public class UIController : MonoBehaviour {
         this._introGroup.GetComponent<CanvasGroup>().blocksRaycasts = true;
 
         this._yesButtonObject.GetComponent<Button>().onClick.AddListener(onForgetButtonClicked);
+        this._muteButton.GetComponent<Button>().onClick.AddListener(OnMuteButtonClicked);
 
         this._iceBeamButtons = this._skillGroup.transform.Find("IceBeamSkills").GetComponent<CanvasGroup>();
         this._iceRuneButtons = this._skillGroup.transform.Find("IceRuneSkills").GetComponent<CanvasGroup>();
@@ -150,6 +167,29 @@ public class UIController : MonoBehaviour {
         SceneManager.LoadScene(0);
     }
 
+    private void OnMuteButtonClicked()
+    {
+        if (this._muteButton.GetComponent<Image>().sprite == this._unmutedSprite)
+        {
+            GameObject.Find("MusicController").GetComponent<AudioSource>().enabled = false;
+            GameObject.Find("IceBeamSound").GetComponent<AudioSource>().enabled = false;
+            GameObject.Find("IceRuneSound").GetComponent<AudioSource>().enabled = false;
+            GameObject.Find("GlacierSound").GetComponent<AudioSource>().enabled = false;
+            GameObject.Find("IceSpikeSound").GetComponent<AudioSource>().enabled = false;
+            GameObject.Find("EnemyDeathSound").GetComponent<AudioSource>().enabled = false;
+            this._muteButton.GetComponent<Image>().sprite = this._mutedSprite;
+        } else
+        {
+            GameObject.Find("MusicController").GetComponent<AudioSource>().enabled = true;
+            GameObject.Find("IceBeamSound").GetComponent<AudioSource>().enabled = true;
+            GameObject.Find("IceRuneSound").GetComponent<AudioSource>().enabled = true;
+            GameObject.Find("GlacierSound").GetComponent<AudioSource>().enabled = true;
+            GameObject.Find("IceSpikeSound").GetComponent<AudioSource>().enabled = true;
+            GameObject.Find("EnemyDeathSound").GetComponent<AudioSource>().enabled = true;
+            this._muteButton.GetComponent<Image>().sprite = this._unmutedSprite;
+        }
+    }
+
     public void ShowBetweenLevel()
     {
         this._nextRoundButton.GetComponent<Image>().enabled = true;
@@ -188,6 +228,7 @@ public class UIController : MonoBehaviour {
             case "Ice Beam":
                 this._skillSystem._hasIceBeam1 = false;
                 currentButton = this._iceBeamButtons.transform.Find("SkillIceBeam1").gameObject;
+                this._iceBeamGroup.transform.Find("Shadow").GetComponent<Image>().enabled = true;
                 break;
             case "Huge Ice Beam":
                 this._skillSystem._hasIceBeam2 = false;
@@ -207,6 +248,7 @@ public class UIController : MonoBehaviour {
             case "Ice Rune":
                 this._skillSystem._hasIceRune1 = false;
                 currentButton = this._iceRuneButtons.transform.Find("SkillIceRune1").gameObject;
+                this._iceRuneGroup.transform.Find("Shadow").GetComponent<Image>().enabled = true;
                 break;
             case "Icy Whirlwind":
                 this._skillSystem._hasIceRune2 = false;
@@ -220,9 +262,10 @@ public class UIController : MonoBehaviour {
                 this._skillSystem._hasIceRune4 = false;
                 currentButton = this._iceRuneButtons.transform.Find("SkillIceRune4").gameObject;
                 break;
-            case "Glacier":
+            case "Glacial Push":
                 this._skillSystem._hasGlacier1 = false;
                 currentButton = this._glacierButtons.transform.Find("SkillGlacier1").gameObject;
+                this._glacierGroup.transform.Find("Shadow").GetComponent<Image>().enabled = true;
                 break;
             case "Glaciers for All!":
                 this._skillSystem._hasGlacier2 = false;
@@ -239,6 +282,7 @@ public class UIController : MonoBehaviour {
             case "Ice Spike":
                 this._skillSystem._hasIcicle1 = false;
                 currentButton = this._icicleButtons.transform.Find("SkillIcicle1").gameObject;
+                this._icicleGroup.transform.Find("Shadow").GetComponent<Image>().enabled = true;
                 break;
             case "Not Yo Mama's Icicle":
                 this._skillSystem._hasIcicle2 = false;
